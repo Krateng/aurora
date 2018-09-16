@@ -1,0 +1,49 @@
+div.filedrop {
+	background-color:beige;
+	height:90px;
+	padding:10px;
+	text-align:center;
+}
+
+div.dream {
+	background-color:beige;
+	padding-left:15px;
+	padding-right:15px;
+	padding-top:5px;
+	padding-bottom:5px;
+	margin-bottom:15px;
+}
+
+p.dream_date {
+	color:gray;
+	
+}
+
+p.dream_attributes img.person {
+	height:80px;
+	width:80px;
+	border-radius: 50%;
+}
+p.dream_attributes img.place {
+	height:80px;
+	width:80px;
+	border-radius: 10%;
+}
+
+
+.filterbutton {
+	cursor:pointer;
+}
+.reset {
+	cursor:pointer;
+	font-size:12px;
+	display:inline;
+	background-color:orange;
+	padding:3px;
+	visibility:hidden;
+}
+
+
+li.filtered {
+	background-color:orange;
+}
