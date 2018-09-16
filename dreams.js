@@ -155,10 +155,12 @@ function filterByPlace(id) {
 
 function filterOnlyByPerson(id) {
 	currentFilteredPlace = -1;
+	document.getElementById("showallplaces").style.visibility = "hidden";
 	filterByPerson(id);
 }
 function filterOnlyByPlace(id) {
 	currentFilteredPerson = -1;
+	document.getElementById("showallpeople").style.visibility = "hidden";
 	filterByPlace(id);
 }
 
