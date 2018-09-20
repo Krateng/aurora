@@ -14,6 +14,10 @@ div.dream {
 	margin-bottom:15px;
 }
 
+div.lucid {
+	background-color:aqua;
+}
+
 p.dream_date {
 	color:gray;
 	
@@ -46,4 +50,9 @@ p.dream_attributes img.place {
 
 li.filtered {
 	background-color:orange;
+}
+
+i.moodji {
+	font-style:normal;
+	cursor:pointer;
 }

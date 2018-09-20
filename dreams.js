@@ -4,6 +4,23 @@ var places = [];
 
 var currentFilteredPerson = -1;
 var currentFilteredPlace = -1;
+var currentFilteredMood = -1;
+
+
+var moods = [
+	{name:"emotional",symbol:"😦",desc:"Highly Emotional"},	//1
+	{name:"sad",symbol:"😢",desc:"Sad"},			//2
+	{name:"creepy",symbol:"👻",desc:"Creepy"},		//4 👀 😨 //I am literally spending my time finding the most fitting emoji for each mood //the absolute state of my life rn
+	{name:"mystery",symbol:"❓",desc:"Mysterious"},		//8
+	{name:"friendship",symbol:"💛",desc:"Affectionate"},	//16 
+	{name:"romance",symbol:"❤️",desc:"Limerent"},		//32 
+	{name:"lewd",symbol:"💜",desc:"Erotic"},		//64 
+	{name:"joy",symbol:"😊",desc:"Joyous"},			//128
+	{name:"yearning",symbol:"😩",desc:"Yearning"},		//256 
+	{name:"fairytale",symbol:"🌄",desc:"Romantic"},		//512 ⛰️
+	{name:"serenity",symbol:"😔",desc:"Serene"}		//1024
+
+];
 
 function refreshPage() {
 
@@ -26,6 +43,7 @@ function refreshPage() {
 		//check if we even want to see this dream according to the filters
 		if (!sortedDreams[i].people.has(currentFilteredPerson) && currentFilteredPerson != -1) continue;
 		if (!sortedDreams[i].places.has(currentFilteredPlace) && currentFilteredPlace != -1) continue;
+		if (!hasMood(currentFilteredMood,sortedDreams[i].mood)) continue;
 		
 		//create the little icons for people
 		var peopleicons = "";
@@ -51,8 +69,36 @@ function refreshPage() {
 		var dreamcontent = sortedDreams[i].content;
 		var date = "" + twodigits(sortedDreams[i].day) + "." + twodigits(sortedDreams[i].month) + "." + sortedDreams[i].year;
 		
+		
+		//create mood emojis
+		var moodjis = ""; //end me
+		num = sortedDreams[i].mood;
+		id = 0;
+		while (2**(id+1) <= num) {
+			id++;
+		}
+		
+		while (num != 0) {
+			if (num >= 2**id) {
+				moodjis = "<i class='moodji' title='" + moods[id].desc + "' onclick='filterByMood(" + id + ")'>" + moods[id].symbol + "</i>" + moodjis;
+				num = num - (2**id);
+			}
+			
+			id--;
+			
+		}
+		
+		
+		//check if lucid
+		if (sortedDreams[i].lucid) {
+			classes = "lucid dream";
+		}
+		else {
+			classes = "dream";
+		}
+		
 		//create the div element for the dream entry and add it
-		document.getElementById("mainscreen").innerHTML += "<div class='dream'><p class='dream_date'>" + date + "</p><p class='dream_attributes'>" + peopleicons + "        " + placeicons + "</p><p class='dream_content'>" + dreamcontent + "</p></div>";
+		document.getElementById("mainscreen").innerHTML += "<div class='" + classes + "'><p class='dream_date'>" + date + "  " + moodjis + "</p><p class='dream_attributes'>" + peopleicons + "        " + placeicons + "</p><p class='dream_content'>" + dreamcontent + "</p></div>";
 		
 	}
 	
@@ -116,6 +162,16 @@ function refreshPage() {
 		
 		document.getElementById("list_places").innerHTML += "<li class='filterbutton" + extraclass + "' onclick='filterByPlace(" + id + ")'>" + name + " (" + amount + ")</li>";
 	}
+	
+	//MOODS
+	
+	//clear the screen
+	document.getElementById("list_moods").innerHTML = "";
+	
+	for (var i=0; i<moods.length; i++) {
+		document.getElementById("list_moods").innerHTML += "<i class='moodji' title='" + moods[i].desc + "' onclick='filterByMood(" + i + ")'>" + moods[i].symbol + "</i>";
+	}
+	
 }
 
 
@@ -153,6 +209,14 @@ function filterByPlace(id) {
 	refreshPage();
 }
 
+function filterByMood(id) {
+	currentFilteredMood = id;
+	
+	document.getElementById("showallmoods").style.visibility = "visible";
+	
+	refreshPage();
+}
+
 function filterOnlyByPerson(id) {
 	currentFilteredPlace = -1;
 	document.getElementById("showallplaces").style.visibility = "hidden";
@@ -176,6 +240,11 @@ function showallpeople() {
 function showallplaces() {
 	currentFilteredPlace = -1;
 	document.getElementById("showallplaces").style.visibility = "hidden";
+	refreshPage();
+}
+function showallmoods() {
+	currentFilteredMood = -1;
+	document.getElementById("showallmoods").style.visibility = "hidden";
 	refreshPage();
 }
 
@@ -206,6 +275,27 @@ function assignAmounts(arr,identifier) {
 	
 }
 
+
+function hasMood(mood,num) {
+	if (mood == -1) return true;
+	id = 0;
+	while (2**(id+1) <= num) {
+		id++;
+	}
+		
+	while (num != 0) {
+		if (num >= 2**id) {
+			if (id == mood) {
+				return true;
+			}
+			num = num - (2**id);
+		}
+			
+		id--;
+			
+	}
+	return false;
+}
 
 
 function twodigits(s) {
@@ -364,6 +454,14 @@ function parseXMLobjects() {
 		
 		var obj = new Object();
 		var currentNode = result[k];
+		
+		
+		// SET DEFAULTS
+		obj["mood"] = 0;
+		obj["people"] = new Set();
+		obj["places"] = new Set();
+		obj["lucid"] = false;
+		
 		
 
 		for (var j=0;j<currentNode.children.length;j++) {
