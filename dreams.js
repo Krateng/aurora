@@ -420,6 +420,9 @@ function parseFile(filetext) {
 	
 }
 //Literally the best function ever
+//I'm not even fecking using it anywhere!!!
+//Note to self: Do not take 1 year pauses between writing on the same code
+
 function parseXML() {
 	var result = xmlfile.documentElement;
 	
@@ -436,11 +439,19 @@ function parseXML() {
 }
 
 
+
+
+
+
 // wat
 function parseXMLobjects() {
 	var result = xmlfile.documentElement;
 
 	var i;
+	
+	//so I don't really remember what the feck I was thinking when writing this but I should probably add some comments now
+	//I guess this is a generic function to take any list of entries in an xml node at a specified depth
+	//this function really is a bit too generic considering I'm dealing with clearly defined .ldd files here
 	
 	for (i=0;i<(arguments.length - 1);i++) {
 		result = result.getElementsByTagName(arguments[i])[0];	
@@ -457,10 +468,11 @@ function parseXMLobjects() {
 		
 		
 		// SET DEFAULTS
-		obj["mood"] = 0;
-		obj["people"] = new Set();
-		obj["places"] = new Set();
-		obj["lucid"] = false;
+		//I made this whole thing super generalized and now I'm just hardcoding this anyway
+		//everything is fecked
+		if (arguments[0] == "dreams") {
+			obj = {"mood":0,"people":new Set(),"places":new Set(),"lucid":false};
+		}
 		
 		
 
@@ -519,4 +531,108 @@ function xmlValue(str) {
 	}
 	if (isNaN(str)) return str;
 	return Number(str);
+}
+
+
+
+
+
+
+
+
+
+
+////
+////
+// SAVING THE CHANGED DIARY
+////
+////
+
+function Indent(num) {
+	r = "";
+	while (num>0) {
+		r += "	";
+		num--;
+	}
+	return r;
+}
+
+function createXMLfile() {
+
+	//If there has ever been a function with amazing potential to be simplified, generalized and elegantized, this one is it
+	//and one day, I will reduce it to a three-liner
+	//but it is not this day	
+	
+	
+	output = "<dreamdata>\n";
+	
+	//people
+	output += Indent(1);
+	output += "<people>\n";
+	
+	for (var i=0;i<people.length;i++) {
+		output += Indent(2);
+		output += "<person>\n";
+		for (attr in people[i]) {
+			if (attr == "amount") break;
+			output += Indent(3);
+			output += "<" + attr + ">" + people[i][attr] + "</" + attr + ">\n";
+		}
+		output += Indent(2);
+		output += "</person>\n";
+	}
+	
+	output += Indent(1);
+	output += "</people>\n";
+	
+	//places
+	output += Indent(1);
+	output += "<places>\n";
+	for (var i=0;i<places.length;i++) {
+		output += Indent(2);
+		output += "<place>\n";
+		for (attr in places[i]) {
+			if (attr == "amount") break;
+			output += Indent(3);
+			output += "<" + attr + ">" + places[i][attr] + "</" + attr + ">\n";
+		}
+		output += Indent(2);
+		output += "</place>\n";
+	}
+	output += Indent(1);
+	output += "</places>\n";
+	
+	//dreams
+	output += Indent(1);
+	output += "<dreams>\n";
+	for (var i=0;i<dreams.length;i++) {
+		output += Indent(2);
+		output += "<dream>\n";
+		for (attr in dreams[i]) {
+			if (attr == "amount") {}
+			else if (typeof dreams[i][attr] == "object") {
+				output += Indent(3);
+				output += "<" + attr + ">\n";
+				dreams[i][attr].forEach(function(k,v,s) {
+					output += Indent(4);
+					output += "<entry>" + v + "</entry>\n";
+				});
+				output += Indent(3);
+				output += "</" + attr + ">\n";
+			}
+			else {
+				output += Indent(3);
+				output += "<" + attr + ">" + dreams[i][attr] + "</" + attr + ">\n";
+			}
+		}
+		output += Indent(2);
+		output += "</dream>\n";
+	}
+	output += Indent(1);
+	output += "</dreams>\n";
+	
+	
+	output += "</dreamdata>";
+	
+	return output;
 }
