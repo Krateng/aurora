@@ -352,6 +352,8 @@ function parseZip(bytes) {
 		zipfile = zip
 		promises = []
 		
+		
+		//saving the picture files as raw bytes in the peoplepics array
 		zip.folder("pics_people").forEach(function (path,file){
 			
 			pr = file.async("base64");
@@ -367,6 +369,7 @@ function parseZip(bytes) {
 
 		});
 		
+		//same for places
 		zip.folder("pics_places").forEach(function (path,file){
 			
 			pr = file.async("base64");
@@ -385,6 +388,7 @@ function parseZip(bytes) {
 		// Gotta do this nonsense because apparently JSZip only can read the files asynchronously instead of just offering a normal feckin function to read it
 		// Why does everything need to be feckin asynchronous nowadays
 		
+		//basically we're combining all the promises into one and when that's done (because all are done) it starts parsing the xml file
 		Promise.all(promises).then(function() {
 			zip.file("data.xml").async("string").then(function (data) {
 				parseFile(data)
@@ -397,6 +401,7 @@ function parseZip(bytes) {
 	
 }
 
+//this is for the xml file
 function parseFile(filetext) {
 
 	var parser = new DOMParser();
@@ -555,6 +560,24 @@ function Indent(num) {
 		num--;
 	}
 	return r;
+}
+
+
+function createZipfile() {
+	var newzipfile = new JSZip();
+	newzipfile.file("data.xml",createXMLfile());
+	newzipfile.folder("pics_people");
+	newzipfile.folder("pics_places");
+	for (var i=0;i<peoplepics.length;i++) {
+		newzipfile.folder("pics_people").file(i + ".jpg",peoplepics[i], {base64: true});
+	}
+	for (var i=0;i<placespics.length;i++) {
+		newzipfile.folder("pics_places").file(i + ".jpg",placespics[i], {base64: true});
+	}
+	promise = newzipfile.generateAsync({type : "blob"}).then(function(blob) {
+		saveAs(blob,"mydreamdiary.ldd");
+	});
+	
 }
 
 function createXMLfile() {
