@@ -306,6 +306,86 @@ function twodigits(s) {
 
 
 
+////
+////
+// ADD NEW STUFF
+////
+////
+
+function addPerson() {
+	createWindow("Person","createPerson()");
+}
+
+function addPlace() {
+	createWindow("Place","createPlace()");
+
+}
+
+function createWindow(type,funct) {
+		
+	bd = document.getElementsByTagName("body")[0];
+	bd.innerHTML += `
+		<div id="shade">
+			<div class="inputwindow">
+				<h1 class="header">Add a new ` + type + `</h1>
+				
+				<input id="createname" placeholder="Name" />
+				
+				
+			</div>
+			
+			<div class="button okaybutton" onclick=` + funct + `><h1>Create</h1></div>
+			<div class="button cancelbutton" onclick="removeShade()"><h1>Cancel</h1></div>
+		
+		</div>
+	
+	`;
+	
+}
+
+function removeShade() {
+	sh = document.getElementById("shade");
+	sh.parentNode.removeChild(sh);
+}
+
+function createPerson() {
+	name = document.getElementById("createname").value;
+	if (name != "") {
+		var np = {};
+		np.id = people.length;
+		np.name = name;
+		np.amount = 0;
+		people.push(np);
+		//assignAmounts(people,"people");		
+		removeShade();
+	}
+	
+}
+
+function createPlace() {
+	name = document.getElementById("createname").value;
+	if (name != "") {
+		var np = {};
+		np.id = places.length;
+		np.name = name;
+		np.amount = 0;
+		places.push(np);
+		//assignAmounts(places,"places");		
+		removeShade();
+	}
+	removeShade();
+}
+
+
+
+
+
+
+
+
+
+
+
 
 ////
 ////

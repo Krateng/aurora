@@ -56,3 +56,80 @@ i.moodji {
 	font-style:normal;
 	cursor:pointer;
 }
+
+
+img.addicon {
+	cursor:pointer;
+}
+
+
+#shade {
+	background-color:rgba(0,0,0,0.8);
+	position:fixed;
+	height:100%;
+	width:100%;
+}
+
+div.inputwindow {
+	background-color:beige;
+	position:fixed;
+	width:800px;
+	height:150px;
+	top:50%;
+	left:50%;
+	margin-top:-75px;
+	margin-left:-400px;
+	position:center;
+	overflow:hidden;
+}
+
+div.button {
+	position:fixed;
+	width:150px;
+	height:50px;
+	top:50%;
+	left:50%;
+	position:center;
+	text-align:center;
+	cursor:pointer;
+	
+}
+
+
+div.okaybutton {
+	background-color:purple;
+	color:yellow;
+	margin-top:100px;
+	margin-left:90px;
+	
+}
+div.cancelbutton {
+	background-color:azure;
+	color:grey;
+	margin-top:100px;
+	margin-left:250px;
+	
+}
+
+div.inputwindow h1.header {
+	background-color:purple;
+	height:65px;
+	width:750px;
+	color:white;
+	padding-left:25px;
+	padding-right:25px;
+	padding-top:25px;
+	margin:0px;
+}
+
+div.inputwindow input {
+	/*margin-top:20px;
+	margin-left:20px;*/
+	
+	background-color:transparent;
+	border:0px;
+	height:50px;
+	width:790px;
+	font-size:40px;
+	padding:5px;
+}
