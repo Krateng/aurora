@@ -1,0 +1,31 @@
+body {
+	color:#8E79AD;
+}
+
+main {
+	background-color:#4A2D74;
+}
+
+#header, #footer {
+	background-color:#2F1557;
+}
+
+#nav {
+	background-color:#1A053A;
+}
+
+div.filedrop {
+	background-color:#694F90;
+}
+
+div.dream {
+	background-color:#694F90;
+}
+
+div.lucid {
+	background-color:#7d67ab;
+}
+
+p.dream_date {
+	color:#383045;
+}
