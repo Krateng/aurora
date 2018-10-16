@@ -321,6 +321,10 @@ function addPlace() {
 
 }
 
+function addDream() {
+	createWindowDream();
+}
+
 function createWindow(type,funct) {
 		
 	bd = document.getElementsByTagName("body")[0];
@@ -329,7 +333,7 @@ function createWindow(type,funct) {
 			<div class="inputwindow">
 				<h1 class="header">Add a new ` + type + `</h1>
 				
-				<input id="createname" placeholder="Name" />
+				<input id="createname" class="biginput" placeholder="Name" />
 				
 				
 			</div>
@@ -340,6 +344,118 @@ function createWindow(type,funct) {
 		</div>
 	
 	`;
+	
+}
+
+function createWindowDream() {
+		
+	bd = document.getElementsByTagName("body")[0];
+	bd.innerHTML += `
+		<div id="shade">
+			<div class="inputwindow biginput">
+				<h1 class="header">Add a new Dream</h1>
+				
+				<table class="inputfieldtable">
+					<tr class="attributelist"><td><input class="smallinput" id="createdream_people" placeholder="People" onfocus="listOptions('people')" oninput="listOptions('people')" /></td></tr>
+					<tr class="attributelist"><td><input class="smallinput"id="createdream_places" placeholder="Places" onfocus="listOptions('places')" oninput="listOptions('places')" /></td></tr>
+					<tr class="dreamtext" placeholder="Dream description"></tr>
+				</table>
+				
+				
+				
+				
+			</div>
+			
+			<div class="button okaybutton" onclick=createDream()><h1>Create</h1></div>
+			<div class="button cancelbutton" onclick="removeShade()"><h1>Cancel</h1></div>
+		
+		</div>
+	
+	`;
+	
+}
+
+function removeDropdowns() {
+	try {
+		oldnode = document.getElementById("dropdown");
+		document.getElementsByTagName("body")[0].removeChild(oldnode);
+	}
+	catch (e) {
+	
+	}
+}
+
+function listOptions(cat) {
+	try {
+		oldnode = document.getElementById("dropdown");
+		document.getElementsByTagName("body")[0].removeChild(oldnode);
+	}
+	catch (e) {
+	
+	}
+	document.getElementById("createdream_" + cat).focus();
+	allOptions = window[cat];
+	validOptions = [];
+	searchstr = document.getElementById("createdream_" + cat).value.toLowerCase();
+
+	
+	
+	for (var i=0;i<allOptions.length;i++) {
+		if (allOptions[i].name.toLowerCase().includes(searchstr)) {
+			validOptions.push(allOptions[i]);
+		}
+	}
+	
+	//console.log(validOptions);
+	
+	if (validOptions.length > 10) {
+		return;
+	}
+	
+	rect = document.getElementById("createdream_" + cat).getBoundingClientRect();
+	
+	newplace_x = rect.x;
+	newplace_y = rect.y + rect.height;
+	//newplace_x = 0;
+	//newplace_y = 20;
+	
+	var dropdownhtml = "<table id='dropdownoptions' class='dropdownoptions_" + cat + "' style='position:fixed;top:" + newplace_y + "px;left:" + newplace_x + "px;'>";
+	
+	for (var j=0;j<validOptions.length;j++) {
+		dropdownhtml += "<tr><td><p onclick='addToList(\"" + validOptions[j].name + "\"," + validOptions[j].id + ",\"" + cat + "\")'>";
+		dropdownhtml += validOptions[j].name;
+		dropdownhtml += "</p></td></tr>";
+	}
+	
+	dropdownhtml += "</table>";
+	
+	node = document.createElement("div");
+	node.innerHTML = dropdownhtml;
+	node.setAttribute("id","dropdown");
+	
+	console.log(dropdownhtml);
+	
+	document.getElementsByTagName("body")[0].appendChild(node);
+	//document.getElementById("createdream_" + cat).parentElement.parentElement.innerHTML += dropdownhtml;
+	
+	document.getElementById("createdream_" + cat).focus();
+	
+	
+	
+}
+
+function addToList(name,id,cat) {
+	console.log("Adding to list " + name + " " + id + " " + cat);
+	removeDropdowns();
+	
+	newtag = document.createElement("p");
+	newtag.setAttribute("class","tag tag_" + cat);
+	newtag.setAttribute("id","tag_" + cat + "_" + id);
+	newtag.innerHTML = name;
+	
+	textfield = document.getElementById("createdream_" + cat);
+	textfield.value = "";
+	textfield.parentElement.insertBefore(newtag,textfield);
 	
 }
 

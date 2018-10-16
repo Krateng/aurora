@@ -5,6 +5,14 @@ div.filedrop {
 	text-align:center;
 }
 
+input:focus{
+	outline:none;
+}
+
+div#mainscreen {
+	margin-top:60px;
+}
+
 div.dream {
 	background-color:beige;
 	padding-left:15px;
@@ -16,6 +24,15 @@ div.dream {
 
 div.lucid {
 	background-color:aqua;
+}
+
+h1.adddream {
+	#background-color:aqua;
+	padding:15px;
+	margin:0px;
+	
+	position:fixed;
+	width:100%;
 }
 
 p.dream_date {
@@ -82,6 +99,10 @@ div.inputwindow {
 	position:center;
 	overflow:hidden;
 }
+div.biginput {
+	height:350px;
+	margin-top:-275px;
+}
 
 div.button {
 	position:fixed;
@@ -94,6 +115,8 @@ div.button {
 	cursor:pointer;
 	
 }
+
+
 
 
 div.okaybutton {
@@ -122,7 +145,7 @@ div.inputwindow h1.header {
 	margin:0px;
 }
 
-div.inputwindow input {
+div.inputwindow input.biginput {
 	/*margin-top:20px;
 	margin-left:20px;*/
 	
@@ -133,3 +156,68 @@ div.inputwindow input {
 	font-size:40px;
 	padding:5px;
 }
+
+div.inputwindow input.smallinput {
+	/*margin-top:20px;
+	margin-left:20px;*/
+	
+	background-color:transparent;
+	border:0px;
+	
+	padding:5px;
+}
+
+
+
+
+table.inputfieldtable {
+	width:100%;
+}
+
+table.inputfieldtable tr.attributelist {
+	height:30px;
+}
+
+table.inputfieldtable tr.dreamtext {
+	height:300px;
+}
+
+
+
+table#dropdownoptions tr {
+}
+table#dropdownoptions tr p {
+	background-color:darkgrey;
+	color:white;
+	border-radius:5px;
+	padding:3px;
+	margin:0px;
+	width:auto;
+	display:inline-block;
+	font-size:13px;
+}
+
+table#dropdownoptions.dropdownoptions_people tr p {
+	background-color:#ff6666;
+}
+
+table#dropdownoptions.dropdownoptions_places tr p {
+	background-color:cyan;
+}
+
+p.tag {
+	display:inline;
+	color:white;
+	border-radius:5px;
+	padding:3px;
+	margin:2px;
+	font-size:13px;
+}
+
+p.tag_people {
+	background-color:red;
+}
+p.tag_places {
+	background-color:blue;
+}
+
