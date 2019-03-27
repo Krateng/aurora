@@ -17,6 +17,9 @@ var xmlfile;
 var peoplepics = [];
 var placespics = [];
 
+
+
+// read the file from the dropbox
 function dragover(evt) {
     	evt.preventDefault();
 }
@@ -38,8 +41,6 @@ function readFile(evt) {
 }
 
 
-
-
 function parseZip(bytes) {
 	var zip = new JSZip();
 
@@ -51,33 +52,22 @@ function parseZip(bytes) {
 
 		//saving the picture files as raw bytes in the peoplepics array
 		zip.folder("pics_people").forEach(function (path,file){
-
 			pr = file.async("base64");
 			pr.then(function (data) {
 				num = path.split(".")[0];
-
 				peoplepics[Number(num)] = data;
 			});
-
 			promises.push(pr);
-
-
-
 		});
 
 		//same for places
 		zip.folder("pics_places").forEach(function (path,file){
-
 			pr = file.async("base64");
 			pr.then(function (data) {
 				num = path.split(".")[0];
-
 				placespics[Number(num)] = data;
 			});
-
 			promises.push(pr);
-
-
 		});
 
 
@@ -90,11 +80,7 @@ function parseZip(bytes) {
 				parseFile(data)
 			});
 		});
-
-
 	});
-
-
 }
 
 //this is for the xml file
@@ -114,12 +100,13 @@ function parseFile(filetext) {
 	console.log(people);
 	console.log(places);
 
-
-
-
 	refreshPage();
 
 }
+
+
+
+
 //Literally the best function ever
 //I'm not even fecking using it anywhere!!!
 //Note to self: Do not take 1 year pauses between writing on the same code
@@ -142,23 +129,23 @@ function parseXML() {
 
 
 
-
-
 // wat
 function parseXMLobjects() {
-	var result = xmlfile.documentElement;
-
-	var i;
+	var result = xmlfile.documentElement; //xml root
+	//var i;
 
 	//so I don't really remember what the feck I was thinking when writing this but I should probably add some comments now
 	//I guess this is a generic function to take any list of entries in an xml node at a specified depth
 	//this function really is a bit too generic considering I'm dealing with clearly defined .ldd files here
 
-	for (i=0;i<(arguments.length - 1);i++) {
+	//go down the node tree as demanded by the function arguments, but not the last one
+	//all non-last arguments are assumed to be unique, the last argument is the actual thing we have a list of
+	for (var i=0;i<(arguments.length - 1);i++) {
 		result = result.getElementsByTagName(arguments[i])[0];
 	}
-
 	result = result.getElementsByTagName(arguments[i]);
+
+
 	//result becomes an array here!
 	//this is not elegant keeping it in the same variable and all but kinda funny if it actually works
 	var resultlist = [];
@@ -176,7 +163,7 @@ function parseXMLobjects() {
 		}
 
 
-
+		// go through the attributes of this object
 		for (var j=0;j<currentNode.children.length;j++) {
 			var attr_name = currentNode.children[j].nodeName;
 
@@ -196,11 +183,11 @@ function parseXMLobjects() {
 
 
 			if (attr_name != "people" && attr_name != "places") {
-
+				// single value
 				var attr_value = xmlValue(currentNode.children[j].childNodes[0].nodeValue);
 			}
 			else {
-
+				// set of values
 				var set = new Set();
 				for (var l=0;l<currentNode.children[j].children.length;l++) {
 					set.add(xmlValue(currentNode.children[j].children[l].childNodes[0].nodeValue));
@@ -208,11 +195,7 @@ function parseXMLobjects() {
 				var attr_value = set;
 			}
 			obj[attr_name] = attr_value;
-
-
 		}
-
-
 
 		//Writing the objects in an array with the id as key
 		resultlist[obj.id] = obj;
@@ -220,11 +203,10 @@ function parseXMLobjects() {
 		console.log(obj);
 	}
 
-
 	return resultlist;
 }
 
-//What a fuckin mess
+//What a feckin mess
 function xmlValue(str) {
 	switch (str) {
 		case "true": return true;

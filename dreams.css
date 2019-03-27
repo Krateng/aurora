@@ -8,6 +8,9 @@ div.filedrop {
 input:focus{
 	outline:none;
 }
+textarea:focus{
+	outline:none;
+}
 
 div#mainscreen {
 	margin-top:60px;
@@ -30,14 +33,14 @@ h1.adddream {
 	#background-color:aqua;
 	padding:15px;
 	margin:0px;
-	
+
 	position:fixed;
 	width:100%;
 }
 
 p.dream_date {
 	color:gray;
-	
+
 }
 
 p.dream_attributes img.person {
@@ -99,7 +102,7 @@ div.inputwindow {
 	position:center;
 	overflow:hidden;
 }
-div.biginput {
+div.inputwindow-big {
 	height:350px;
 	margin-top:-275px;
 }
@@ -113,7 +116,7 @@ div.button {
 	position:center;
 	text-align:center;
 	cursor:pointer;
-	
+
 }
 
 
@@ -124,14 +127,14 @@ div.okaybutton {
 	color:yellow;
 	margin-top:100px;
 	margin-left:90px;
-	
+
 }
 div.cancelbutton {
 	background-color:azure;
 	color:grey;
 	margin-top:100px;
 	margin-left:250px;
-	
+
 }
 
 div.inputwindow h1.header {
@@ -145,25 +148,28 @@ div.inputwindow h1.header {
 	margin:0px;
 }
 
-div.inputwindow input.biginput {
+div.inputwindow textarea.biginput {
 	/*margin-top:20px;
 	margin-left:20px;*/
-	
+
+	font-family: inherit;
+
 	background-color:transparent;
 	border:0px;
-	height:50px;
-	width:790px;
-	font-size:40px;
+	height:150px;
+	overflow-y: scroll;
+	width:780px;
+	/*font-size:40px;*/
 	padding:5px;
 }
 
 div.inputwindow input.smallinput {
 	/*margin-top:20px;
 	margin-left:20px;*/
-	
+
 	background-color:transparent;
 	border:0px;
-	
+
 	padding:5px;
 }
 
@@ -180,6 +186,7 @@ table.inputfieldtable tr.attributelist {
 
 table.inputfieldtable tr.dreamtext {
 	height:300px;
+	vertical-align: top;
 }
 
 
@@ -206,7 +213,8 @@ table#dropdownoptions.dropdownoptions_places tr p {
 }
 
 p.tag {
-	display:inline;
+	display:inline-block;
+	page-break-inside: avoid;
 	color:white;
 	border-radius:5px;
 	padding:3px;
@@ -220,4 +228,3 @@ p.tag_people {
 p.tag_places {
 	background-color:blue;
 }
-

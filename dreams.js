@@ -257,7 +257,7 @@ function assignAmounts(arr,identifier) {
 	//go through all dreams, count if person / place appears there
 	for (var i=0;i<dreams.length;i++) {
 		if (dreams[i] == undefined) continue;
-		console.log("now trying to read people in dream " + i);
+		console.log("now trying to read " + identifier + " in dream " + i);
 		for (let item of dreams[i][identifier]) {
 			arr[item].amount += 1;
 		}
@@ -321,7 +321,7 @@ function createWindow(type,funct) {
 	bd = document.getElementsByTagName("body")[0];
 	bd.innerHTML += `
 		<div id="shade">
-			<div class="inputwindow">
+			<div class="inputwindow inputwindow-small">
 				<h1 class="header">Add a new ` + type + `</h1>
 
 				<input id="createname" class="biginput" placeholder="Name" />
@@ -343,13 +343,19 @@ function createWindowDream() {
 	bd = document.getElementsByTagName("body")[0];
 	bd.innerHTML += `
 		<div id="shade">
-			<div class="inputwindow biginput">
+			<div class="inputwindow inputwindow-big">
 				<h1 class="header">Add a new Dream</h1>
 
 				<table class="inputfieldtable">
-					<tr class="attributelist"><td><input class="smallinput" id="createdream_people" placeholder="People" onfocus="listOptions('people')" oninput="listOptions('people')" /></td></tr>
-					<tr class="attributelist"><td><input class="smallinput"id="createdream_places" placeholder="Places" onfocus="listOptions('places')" oninput="listOptions('places')" /></td></tr>
-					<tr class="dreamtext" placeholder="Dream description"></tr>
+					<tr class="attributelist"><td id="createdream_people_list">
+						<input class="smallinput" id="createdream_people" placeholder="People" onfocus="listOptions('people')" oninput="listOptions('people')" />
+					</td></tr>
+					<tr class="attributelist"><td id="createdream_places_list">
+						<input class="smallinput" id="createdream_places" placeholder="Places" onfocus="listOptions('places')" oninput="listOptions('places')" />
+					</td></tr>
+					<tr class="dreamtext"><td>
+						<textarea class="biginput" placeholder="Dream description" id="createdream_desc" rows="10"></textarea>
+					</td></tr>
 				</table>
 
 
@@ -377,6 +383,8 @@ function removeDropdowns() {
 }
 
 function listOptions(cat) {
+
+	// remove old dropdown
 	try {
 		oldnode = document.getElementById("dropdown");
 		document.getElementsByTagName("body")[0].removeChild(oldnode);
@@ -389,20 +397,23 @@ function listOptions(cat) {
 	validOptions = [];
 	searchstr = document.getElementById("createdream_" + cat).value.toLowerCase();
 
-
-
+	// check which people / places match the search string
 	for (var i=0;i<allOptions.length;i++) {
+		if (allOptions[i] == undefined) {
+			continue;
+		}
 		if (allOptions[i].name.toLowerCase().includes(searchstr)) {
 			validOptions.push(allOptions[i]);
 		}
 	}
 
 	//console.log(validOptions);
-
+	// don't show dropdown when search is still too wide
 	if (validOptions.length > 10) {
 		return;
 	}
 
+	// calc position for dropdown
 	rect = document.getElementById("createdream_" + cat).getBoundingClientRect();
 
 	newplace_x = rect.x;
@@ -424,8 +435,6 @@ function listOptions(cat) {
 	node.innerHTML = dropdownhtml;
 	node.setAttribute("id","dropdown");
 
-	console.log(dropdownhtml);
-
 	document.getElementsByTagName("body")[0].appendChild(node);
 	//document.getElementById("createdream_" + cat).parentElement.parentElement.innerHTML += dropdownhtml;
 
@@ -435,8 +444,8 @@ function listOptions(cat) {
 
 }
 
+// add selected entry from dropdown to list in dream creation
 function addToList(name,id,cat) {
-	console.log("Adding to list " + name + " " + id + " " + cat);
 	removeDropdowns();
 
 	newtag = document.createElement("p");
@@ -481,4 +490,48 @@ function createPlace() {
 		removeShade();
 	}
 	removeShade();
+}
+
+
+function createDream() {
+	peopletags = document.getElementById("createdream_people_list").getElementsByTagName("p");
+	placetags = document.getElementById("createdream_places_list").getElementsByTagName("p");
+
+	peopleset = new Set();
+	placeset = new Set();
+
+	for (let persontag of peopletags) {
+		id = persontag.id.split("_").slice(-1)[0];
+		peopleset.add(Number(id));
+	}
+	for (let placetag of placetags) {
+		id = placetag.id.split("_").slice(-1)[0];
+		placeset.add(Number(id));
+	}
+
+	desc = document.getElementById("createdream_desc").value;
+
+	var today = new Date();
+
+	if (desc != "") {
+		var nd = {};
+		nd.id = dreams.length;
+		nd.content = desc;
+		nd.people = peopleset;
+		nd.places = placeset;
+		nd.lucid = false;
+		nd.mood = 0;
+		nd.day = today.getDate();
+		nd.month = today.getMonth();
+		nd.year = today.getFullYear();
+
+		dreams.push(nd);
+		assignAmounts(people,"people");
+		assignAmounts(places,"places");
+
+	}
+	removeShade();
+
+	refreshPage();
+
 }
