@@ -1,6 +1,4 @@
-var dreams = [];
-var people = [];
-var places = [];
+
 
 var currentFilteredPerson = -1;
 var currentFilteredPlace = -1;
@@ -50,7 +48,8 @@ function refreshPage() {
 			console.log("finding person " + id + " in database");
 			//find in people database
 
-			peopleicons += "<img class='filterbutton person' onclick='filterOnlyByPerson(" + id + ")' src='data:img/jpg;base64," + peoplepics[id] + "' title='" + people[id].name + "' onerror='this.src = \"defaultperson.jpg\";'></img>";
+			image = ((peoplepics[id] != undefined) ? "data:img/jpg;base64," + peoplepics[id] : "defaultperson.jpg")
+			peopleicons += "<img class='filterbutton person' onclick='filterOnlyByPerson(" + id + ")' src='" + image + "' title='" + people[id].name + "'></img>";
 		}
 
 		//create the little icons for places
@@ -60,7 +59,8 @@ function refreshPage() {
 			console.log("creating icon for place " + id);
 			//find in places database
 
-			placeicons += "<img class='filterbutton place' onclick='filterOnlyByPlace(" + id + ")' src='data:img/jpg;base64," + placespics[id] + "' title='" + places[id].name + "' onerror='this.src = \"defaultplace.jpg\";'></img>";
+			image = ((placespics[id] != undefined) ? "data:img/jpg;base64," + placespics[id] : "defaultplace.jpg")
+			placeicons += "<img class='filterbutton place' onclick='filterOnlyByPlace(" + id + ")' src='" + image + "' title='" + places[id].name + "'></img>";
 		}
 
 		var dreamcontent = sortedDreams[i].content;
@@ -178,7 +178,7 @@ function refreshPage() {
 function sortByAmount(arr) {
 	var ar = arr.slice(0);
 	ar.sort(function(a,b){return b.amount - a.amount});
-	while (ar[ar.length-1] == undefined) ar.pop();
+	while (ar.length > 0 && ar[ar.length-1] == undefined) ar.pop();
 	return ar;
 }
 
@@ -189,7 +189,7 @@ function sortByDate(arr) {
 		if (a.month!=b.month) return b.month - a.month;
 		return b.day - a.day;
 	});
-	while (ar[ar.length-1] == undefined) ar.pop();
+	while (ar.length > 0 && ar[ar.length-1] == undefined) ar.pop();
 	return ar;
 }
 
@@ -244,27 +244,7 @@ function showallmoods() {
 
 
 
-function assignAmounts(arr,identifier) {
 
-	//create the amount attribute for all elements
-	for (var a=0;a<arr.length;a++) {
-		if (arr[a] == undefined) continue;
-		arr[a]["amount"] = 0;
-		console.log("assigning amount 0 to " + arr[a].name);
-	}
-	console.log("done assigning");
-
-	//go through all dreams, count if person / place appears there
-	for (var i=0;i<dreams.length;i++) {
-		if (dreams[i] == undefined) continue;
-		console.log("now trying to read " + identifier + " in dream " + i);
-		for (let item of dreams[i][identifier]) {
-			arr[item].amount += 1;
-		}
-	}
-
-
-}
 
 
 function hasMood(mood,num) {
@@ -462,76 +442,4 @@ function addToList(name,id,cat) {
 function removeShade() {
 	sh = document.getElementById("shade");
 	sh.parentNode.removeChild(sh);
-}
-
-function createPerson() {
-	name = document.getElementById("createname").value;
-	if (name != "") {
-		var np = {};
-		np.id = people.length;
-		np.name = name;
-		np.amount = 0;
-		people.push(np);
-		//assignAmounts(people,"people");
-		removeShade();
-	}
-
-}
-
-function createPlace() {
-	name = document.getElementById("createname").value;
-	if (name != "") {
-		var np = {};
-		np.id = places.length;
-		np.name = name;
-		np.amount = 0;
-		places.push(np);
-		//assignAmounts(places,"places");
-		removeShade();
-	}
-	removeShade();
-}
-
-
-function createDream() {
-	peopletags = document.getElementById("createdream_people_list").getElementsByTagName("p");
-	placetags = document.getElementById("createdream_places_list").getElementsByTagName("p");
-
-	peopleset = new Set();
-	placeset = new Set();
-
-	for (let persontag of peopletags) {
-		id = persontag.id.split("_").slice(-1)[0];
-		peopleset.add(Number(id));
-	}
-	for (let placetag of placetags) {
-		id = placetag.id.split("_").slice(-1)[0];
-		placeset.add(Number(id));
-	}
-
-	desc = document.getElementById("createdream_desc").value;
-
-	var today = new Date();
-
-	if (desc != "") {
-		var nd = {};
-		nd.id = dreams.length;
-		nd.content = desc;
-		nd.people = peopleset;
-		nd.places = placeset;
-		nd.lucid = false;
-		nd.mood = 0;
-		nd.day = today.getDate();
-		nd.month = today.getMonth();
-		nd.year = today.getFullYear();
-
-		dreams.push(nd);
-		assignAmounts(people,"people");
-		assignAmounts(places,"places");
-
-	}
-	removeShade();
-
-	refreshPage();
-
 }

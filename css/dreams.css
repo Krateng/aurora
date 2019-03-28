@@ -173,6 +173,15 @@ div.inputwindow input.smallinput {
 	padding:5px;
 }
 
+div.inputwindow input.biginput {
+	background-color:transparent;
+	border:0px;
+	height:50px;
+	width:790px;
+	font-size:40px;
+	padding:5px;
+}
+
 
 
 
