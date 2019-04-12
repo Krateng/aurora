@@ -277,7 +277,7 @@ function createXMLfile() {
 		for (attr in people[i]) {
 			if (attr == "amount") break;
 			output += Indent(3);
-			output += "<" + attr + ">" + people[i][attr] + "</" + attr + ">\n";
+			output += "<" + attr + ">" + people[i][attr].replace("&","&amp;") + "</" + attr + ">\n";
 		}
 		output += Indent(2);
 		output += "</person>\n";
@@ -295,7 +295,7 @@ function createXMLfile() {
 		for (attr in places[i]) {
 			if (attr == "amount") break;
 			output += Indent(3);
-			output += "<" + attr + ">" + places[i][attr] + "</" + attr + ">\n";
+			output += "<" + attr + ">" + places[i][attr].replace("&","&amp;") + "</" + attr + ">\n";
 		}
 		output += Indent(2);
 		output += "</place>\n";
@@ -323,7 +323,7 @@ function createXMLfile() {
 			}
 			else {
 				output += Indent(3);
-				output += "<" + attr + ">" + dreams[i][attr] + "</" + attr + ">\n";
+				output += "<" + attr + ">" + dreams[i][attr].replace("&","&amp;") + "</" + attr + ">\n";
 			}
 		}
 		output += Indent(2);
