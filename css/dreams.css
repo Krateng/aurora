@@ -83,15 +83,26 @@ img.addicon {
 }
 
 
+/**
+
+THE INPUT WINDOWS
+
+
+**/
+
+
+
+
 #shade {
-	background-color:rgba(0,0,0,0.8);
+	background-color:rgba(0,0,0,0.9);
 	position:fixed;
 	height:100%;
 	width:100%;
 }
 
-div.inputwindow {
-	background-color:beige;
+/* main window */
+table.inputwindow {
+
 	position:fixed;
 	width:800px;
 	height:150px;
@@ -101,60 +112,64 @@ div.inputwindow {
 	margin-left:-400px;
 	position:center;
 	overflow:hidden;
+	border-collapse: collapse;
 }
-div.inputwindow-big {
+table.inputwindow-big {
 	height:350px;
 	margin-top:-275px;
 }
 
-div.button {
-	position:fixed;
-	width:150px;
-	height:50px;
-	top:50%;
-	left:50%;
-	position:center;
-	text-align:center;
-	cursor:pointer;
-
-}
-
-
-
-
-div.okaybutton {
-	background-color:purple;
-	color:yellow;
-	margin-top:100px;
-	margin-left:90px;
-
-}
-div.cancelbutton {
-	background-color:azure;
-	color:grey;
-	margin-top:100px;
-	margin-left:250px;
-
-}
-
-div.inputwindow h1.header {
-	background-color:purple;
+/* rows */
+table.inputwindow tr.header td {
+	/*background-color:purple;
 	height:65px;
 	width:750px;
 	color:white;
 	padding-left:25px;
 	padding-right:25px;
 	padding-top:25px;
-	margin:0px;
+	margin:0px;*/
+	font-size:200%;
+	font-weight: bold;
+	padding-bottom:20px;
+	padding-top:10px;
+	color:yellow;
 }
 
-div.inputwindow textarea.biginput {
+table.inputwindow tr.buttons td {
+	/*padding-top:15px;*/
+}
+
+
+/* subtable */
+
+table.inputfieldtable {
+	width:100%;
+	/*background-color:beige;*/
+	border-collapse: collapse;
+	border-spacing:0px;
+}
+
+table.inputfieldtable tr.attributelist {
+	height:30px;
+}
+
+table.inputfieldtable tr.dreamtext {
+	height:200px;
+	vertical-align: top;
+}
+
+/* input elements */
+
+table.inputwindow textarea.biginput {
 	/*margin-top:20px;
 	margin-left:20px;*/
 
 	font-family: inherit;
+	color:beige;
 
 	background-color:transparent;
+
 	border:0px;
 	height:150px;
 	overflow-y: scroll;
@@ -163,40 +178,95 @@ div.inputwindow textarea.biginput {
 	padding:5px;
 }
 
-div.inputwindow input.smallinput {
+table.inputwindow input.smallinput {
 	/*margin-top:20px;
 	margin-left:20px;*/
 
+	color:beige;
 	background-color:transparent;
 	border:0px;
 
 	padding:5px;
 }
 
-div.inputwindow input.biginput {
+table.inputwindow input.biginput {
 	background-color:transparent;
+	color:beige;
 	border:0px;
 	height:50px;
 	width:790px;
 	font-size:40px;
-	padding:5px;
+	/*padding:5px;*/
+}
+
+table.inputwindow textarea:focus {
+	background-color:rgba(0,0,0,0.1);
 }
 
 
 
 
-table.inputfieldtable {
-	width:100%;
+
+
+/* buttons */
+
+div.button {
+	/*position:fixed;*/
+	float:right;
+	margin-left: 15px;
+	margin-top:15px;
+	width:150px;
+	height:50px;
+	line-height: 50px;
+	top:35px;
+	left:15px;
+	position:center;
+	text-align:center;
+	cursor:pointer;
+	font-size: 180%;
+	font-weight: bold;
 }
 
-table.inputfieldtable tr.attributelist {
-	height:30px;
+div.okaybutton {
+	background-color:purple;
+	color:yellow;
+	/*margin-top:100px;
+	margin-left:90px;
+	*/
+
+}
+div.cancelbutton {
+	background-color:azure;
+	color:grey;
+	/*margin-top:100px;
+	margin-left:250px;
+	*/
 }
 
-table.inputfieldtable tr.dreamtext {
-	height:300px;
-	vertical-align: top;
+
+
+/* textarea styling */
+::-webkit-scrollbar {
+  width: 8px;
+  cursor: pointer;
 }
+::-webkit-scrollbar-track {
+  background: aqua;
+  background-color:rgba(0,255,255,0.1);
+}
+::-webkit-scrollbar-thumb {
+background-color:rgba(130,255,255,0.1);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: purple;
+}
+textarea {
+	resize: none;
+}
+
+
+
+
 
 
 

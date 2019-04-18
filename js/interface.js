@@ -301,16 +301,23 @@ function createWindow(type,funct) {
 	bd = document.getElementsByTagName("body")[0];
 	bd.innerHTML += `
 		<div id="shade">
-			<div class="inputwindow inputwindow-small">
-				<h1 class="header">Add a new ` + type + `</h1>
-
+			<table class="inputwindow inputwindow-small">
+				<tr class="header"><td>Add a new ` + type + `</td></tr>
+				<tr><td>
 				<input id="createname" class="biginput" placeholder="Name" />
+				</td></tr>
 
 
-			</div>
+				<tr><td>
+				<div class="button okaybutton" onclick=` + funct + `>Create</div>
+				<div class="button cancelbutton" onclick="removeShade()">Cancel</div>
+				</td></tr>
 
-			<div class="button okaybutton" onclick=` + funct + `><h1>Create</h1></div>
-			<div class="button cancelbutton" onclick="removeShade()"><h1>Cancel</h1></div>
+
+
+
+
+			</table>
 
 		</div>
 
@@ -323,8 +330,11 @@ function createWindowDream() {
 	bd = document.getElementsByTagName("body")[0];
 	bd.innerHTML += `
 		<div id="shade">
-			<div class="inputwindow inputwindow-big">
-				<h1 class="header">Add a new Dream</h1>
+			<table class="inputwindow inputwindow-big">
+				<tr class="header"><td>
+				Add a new Dream
+				</td></tr>
+				<tr class="inputs"><td>
 
 				<table class="inputfieldtable">
 					<tr class="attributelist"><td id="createdream_people_list">
@@ -338,13 +348,18 @@ function createWindowDream() {
 					</td></tr>
 				</table>
 
+				</td></tr>
+
+				<tr class="buttons"><td>
+
+				<div class="button okaybutton" onclick=createDream()>Create</div>
+				<div class="button cancelbutton" onclick="removeShade()">Cancel</div>
+
+				</td></tr>
+
+			</table>
 
 
-
-			</div>
-
-			<div class="button okaybutton" onclick=createDream()><h1>Create</h1></div>
-			<div class="button cancelbutton" onclick="removeShade()"><h1>Cancel</h1></div>
 
 		</div>
 
