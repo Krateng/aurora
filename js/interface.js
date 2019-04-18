@@ -20,6 +20,24 @@ var moods = [
 
 ];
 
+
+function personpic(id) {
+	if (peoplepics[id] == undefined || peoplepics[id] == "") {
+		return "defaultperson.jpg";
+	}
+	else {
+		return "data:img/jpg;base64," + peoplepics[id]
+	}
+}
+function placepic(id) {
+	if (placespics[id] == undefined || placespics[id] == "") {
+		return "defaultplace.jpg";
+	}
+	else {
+		return "data:img/jpg;base64," + placespics[id]
+	}
+}
+
 function refreshPage() {
 
 	//DREAMS
@@ -48,7 +66,7 @@ function refreshPage() {
 			console.log("finding person " + id + " in database");
 			//find in people database
 
-			image = ((peoplepics[id] != undefined) ? "data:img/jpg;base64," + peoplepics[id] : "defaultperson.jpg")
+			image = personpic(id)
 			peopleicons += "<img class='filterbutton person' onclick='filterOnlyByPerson(" + id + ")' src='" + image + "' title='" + people[id].name + "'></img>";
 		}
 
@@ -59,7 +77,7 @@ function refreshPage() {
 			console.log("creating icon for place " + id);
 			//find in places database
 
-			image = ((placespics[id] != undefined) ? "data:img/jpg;base64," + placespics[id] : "defaultplace.jpg")
+			image = placepic(id)
 			placeicons += "<img class='filterbutton place' onclick='filterOnlyByPlace(" + id + ")' src='" + image + "' title='" + places[id].name + "'></img>";
 		}
 
@@ -327,6 +345,12 @@ function createWindow(type,funct) {
 
 function createWindowDream() {
 
+	moodlethtml = ""
+	for (var i=0;i<moods.length;i++) {
+		mood = moods[i];
+		moodlethtml += "<span class='moodlet-inactive' title='" + mood["desc"] + "' onclick='triggerMoodlet(this)' id='moodlet-" + mood["name"] + "'>" + mood["symbol"] + "</span>"
+	}
+
 	bd = document.getElementsByTagName("body")[0];
 	bd.innerHTML += `
 		<div id="shade">
@@ -343,9 +367,14 @@ function createWindowDream() {
 					<tr class="attributelist"><td id="createdream_places_list">
 						<input class="smallinput" id="createdream_places" placeholder="Places" onfocus="listOptions('places')" oninput="listOptions('places')" />
 					</td></tr>
+
 					<tr class="dreamtext"><td>
 						<textarea class="biginput" placeholder="Dream description" id="createdream_desc" rows="10"></textarea>
 					</td></tr>
+
+					<tr class="moodletbar"><td id="createdream_moodlets">`
+						+ moodlethtml +
+					`</td></tr>
 				</table>
 
 				</td></tr>
@@ -365,6 +394,17 @@ function createWindowDream() {
 
 	`;
 
+}
+
+function triggerMoodlet(e) {
+	if (e.classList.contains("moodlet-active")) {
+		e.classList.remove("moodlet-active");
+		e.classList.add("moodlet-inactive");
+	}
+	else if (e.classList.contains("moodlet-inactive")) {
+		e.classList.remove("moodlet-inactive");
+		e.classList.add("moodlet-active");
+	}
 }
 
 function removeDropdowns() {
@@ -419,7 +459,16 @@ function listOptions(cat) {
 	var dropdownhtml = "<table id='dropdownoptions' class='dropdownoptions_" + cat + "' style='position:fixed;top:" + newplace_y + "px;left:" + newplace_x + "px;'>";
 
 	for (var j=0;j<validOptions.length;j++) {
-		dropdownhtml += "<tr><td><p onclick='addToList(\"" + validOptions[j].name + "\"," + validOptions[j].id + ",\"" + cat + "\")'>";
+		name = validOptions[j].name
+		id = validOptions[j].id
+		if (cat=="places") {
+			img = "url(\"" + placepic(id) + "\")"
+		}
+		else {
+			img = "url(\"" + personpic(id) + "\")"
+		}
+		dropdownhtml += "<tr><td>"
+		dropdownhtml += "<p onclick='addToList(\"" + name + "\"," + id + ",\"" + cat + "\")' style='background-image:" + img + "'>";
 		dropdownhtml += validOptions[j].name;
 		dropdownhtml += "</p></td></tr>";
 	}
@@ -443,8 +492,16 @@ function listOptions(cat) {
 function addToList(name,id,cat) {
 	removeDropdowns();
 
+	if (cat=="places") {
+		img = "url(\"" + placepic(id) + "\")"
+	}
+	else {
+		img = "url(\"" + personpic(id) + "\")"
+	}
+
 	newtag = document.createElement("p");
 	newtag.setAttribute("class","tag tag_" + cat);
+	newtag.setAttribute("style","background-image:" + img)
 	newtag.setAttribute("id","tag_" + cat + "_" + id);
 	newtag.innerHTML = name;
 

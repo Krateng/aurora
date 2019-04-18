@@ -3,6 +3,11 @@ div.filedrop {
 	height:90px;
 	padding:10px;
 	text-align:center;
+	overflow:hidden;
+}
+
+nav#nav {
+	overflow-y:scroll;
 }
 
 input:focus{
@@ -57,6 +62,7 @@ p.dream_attributes img.place {
 
 .filterbutton {
 	cursor:pointer;
+	margin-right:5px;
 }
 .reset {
 	cursor:pointer;
@@ -157,6 +163,17 @@ table.inputfieldtable tr.attributelist {
 table.inputfieldtable tr.dreamtext {
 	height:200px;
 	vertical-align: top;
+}
+
+table.inputfieldtable tr.moodletbar {
+	cursor:pointer;
+	font-size: 150%;
+}
+table.inputfieldtable tr.moodletbar span.moodlet-inactive {
+	opacity:0.3;
+}
+table.inputfieldtable tr.moodletbar span.moodlet-active {
+	opacity: 1;
 }
 
 /* input elements */
@@ -281,6 +298,12 @@ table#dropdownoptions tr p {
 	width:auto;
 	display:inline-block;
 	font-size:13px;
+	cursor:pointer;
+
+	background-size:contain;
+	background-repeat: no-repeat;
+	background-position: left;
+	padding-left:30px;
 }
 
 table#dropdownoptions.dropdownoptions_people tr p {
@@ -299,6 +322,11 @@ p.tag {
 	padding:3px;
 	margin:2px;
 	font-size:13px;
+
+	background-size:contain;
+	background-repeat: no-repeat;
+	background-position: left;
+	padding-left:30px;
 }
 
 p.tag_people {

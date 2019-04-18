@@ -35,9 +35,22 @@ function createPlace() {
 function createDream() {
 	peopletags = document.getElementById("createdream_people_list").getElementsByTagName("p");
 	placetags = document.getElementById("createdream_places_list").getElementsByTagName("p");
+	moodlets = document.getElementById("createdream_moodlets").getElementsByTagName("span")
 
 	peopleset = new Set();
 	placeset = new Set();
+	moodinteger = 0;
+	for (var i=0;i<moodlets.length;i++) {
+		moodlet = moodlets[i];
+		if (moodlet.classList.contains("moodlet-active")) {
+			name = moodlet.id.replace("moodlet-","");
+			for (var j=0;j<moods.length;j++) {
+				if (moods[j].name == name) {
+					moodinteger += Math.pow(2,j)
+				}
+			}
+		}
+	}
 
 	for (let persontag of peopletags) {
 		id = persontag.id.split("_").slice(-1)[0];
@@ -59,7 +72,7 @@ function createDream() {
 		nd.people = peopleset;
 		nd.places = placeset;
 		nd.lucid = false;
-		nd.mood = 0;
+		nd.mood = moodinteger;
 		nd.day = today.getDate();
 		nd.month = today.getMonth() + 1;
 		nd.year = today.getFullYear();
