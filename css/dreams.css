@@ -21,6 +21,15 @@ div#mainscreen {
 	margin-top:60px;
 }
 
+img.saveicon {
+	width:40px;
+	height:40px;
+	position:fixed;
+	right:5px;
+	top:5px;
+	cursor:pointer;
+}
+
 div.dream {
 	background-color:beige;
 	padding-left:15px;
