@@ -32,7 +32,7 @@ function createPlace() {
 }
 
 
-function createDream() {
+function changeDream(dreamid) {
 	peopletags = document.getElementById("createdream_people_list").getElementsByTagName("p");
 	placetags = document.getElementById("createdream_places_list").getElementsByTagName("p");
 	moodlets = document.getElementById("createdream_moodlets").getElementsByTagName("span")
@@ -63,21 +63,19 @@ function createDream() {
 
 	desc = document.getElementById("createdream_desc").value;
 
-	var today = new Date();
+
 
 	if (desc != "") {
-		var nd = {};
-		nd.id = dreams.length;
-		nd.content = desc;
-		nd.people = peopleset;
-		nd.places = placeset;
-		nd.lucid = false;
-		nd.mood = moodinteger;
-		nd.day = today.getDate();
-		nd.month = today.getMonth() + 1;
-		nd.year = today.getFullYear();
 
-		dreams.push(nd);
+		console.log("Editing dream " + dreamid)
+		console.log(dreams[dreamid])
+		dreams[dreamid].content = desc;
+		dreams[dreamid].people = peopleset;
+		dreams[dreamid].places = placeset;
+		dreams[dreamid].mood = moodinteger;
+		dreams[dreamid].lucid = false;
+
+
 		assignAmounts(people,"people");
 		assignAmounts(places,"places");
 
@@ -85,6 +83,23 @@ function createDream() {
 	removeShade();
 
 	refreshPage();
+}
+
+function createDream() {
+
+	id = dreams.length;
+	newdream = {}
+	newdream.id = id
+
+	var today = new Date();
+	newdream.day = today.getDate();
+	newdream.month = today.getMonth() + 1;
+	newdream.year = today.getFullYear();
+
+	dreams.push(newdream);
+	changeDream(id)
+
+
 
 }
 

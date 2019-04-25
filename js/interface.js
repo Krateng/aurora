@@ -115,7 +115,7 @@ function refreshPage() {
 
 
 		//create the div element for the dream entry
-		html += "<div class='" + classes + "'><p class='dream_date'>" + date + "  " + moodjis + "</p><p class='dream_attributes'>" + peopleicons + "        " + placeicons + "</p><p class='dream_content'>" + dreamcontent + "</p><img src='icon_edit.png' class='edit_dream_button' /></div>";
+		html += "<div class='" + classes + "'><p class='dream_date'>" + date + "  " + moodjis + "</p><p class='dream_attributes'>" + peopleicons + "        " + placeicons + "</p><p class='dream_content'>" + dreamcontent + "</p><img src='icon_edit.png' onclick=editDream(" + sortedDreams[i].id + ") class='edit_dream_button' /></div>";
 
 
 
@@ -311,7 +311,11 @@ function addPlace() {
 }
 
 function addDream() {
-	createWindowDream();
+	createWindowDream(null);
+}
+
+function editDream(id) {
+	createWindowDream(id)
 }
 
 function createWindow(type,funct) {
@@ -343,7 +347,10 @@ function createWindow(type,funct) {
 
 }
 
-function createWindowDream() {
+function createWindowDream(id) {
+
+	title = ((id == null) ? "Add a new dream" : "Edit dream");
+	button = ((id == null) ? "<div class='button okaybutton' onclick=createDream()>Create</div>" : "<div class='button okaybutton' onclick=changeDream(" + id + ")>Save</div>");
 
 	moodlethtml = ""
 	for (var i=0;i<moods.length;i++) {
@@ -356,7 +363,7 @@ function createWindowDream() {
 		<div id="shade">
 			<table class="inputwindow inputwindow-big">
 				<tr class="header"><td>
-				Add a new Dream
+				` + title + `
 				</td></tr>
 				<tr class="inputs"><td>
 
@@ -381,7 +388,7 @@ function createWindowDream() {
 
 				<tr class="buttons"><td>
 
-				<div class="button okaybutton" onclick=createDream()>Create</div>
+				` + button + `
 				<div class="button cancelbutton" onclick="removeShade()">Cancel</div>
 
 				</td></tr>
@@ -393,6 +400,17 @@ function createWindowDream() {
 		</div>
 
 	`;
+
+	if (id != null) {
+		dr = dreams[id]
+		document.getElementById("createdream_desc").value = dr.content
+		for (let id of dr.places) {
+			addToList(places[id].name,id,"places")
+		}
+		for (let id of dr.people) {
+			addToList(people[id].name,id,"people")
+		}
+	}
 
 }
 
