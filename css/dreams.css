@@ -35,12 +35,21 @@ div.dream {
 	padding-left:15px;
 	padding-right:15px;
 	padding-top:5px;
-	padding-bottom:5px;
+	padding-bottom:30px;
 	margin-bottom:15px;
 }
 
 div.lucid {
 	background-color:aqua;
+}
+
+div.dream img.edit_dream_button {
+	width:20px;
+	height:20px;
+	/*position:absolute;
+	right:30px;*/
+	float:right;
+	cursor:pointer;
 }
 
 h1.adddream {
