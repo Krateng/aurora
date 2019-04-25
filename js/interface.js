@@ -6,19 +6,44 @@ var currentFilteredMood = -1;
 
 
 var moods = [
-	{name:"emotional",symbol:"😦",desc:"Highly Emotional"},	//1
-	{name:"sad",symbol:"😢",desc:"Sad"},			//2
-	{name:"creepy",symbol:"👻",desc:"Creepy"},		//4 👀 😨 //I am literally spending my time finding the most fitting emoji for each mood //the absolute state of my life rn
-	{name:"mystery",symbol:"❓",desc:"Mysterious"},		//8
-	{name:"friendship",symbol:"💛",desc:"Affectionate"},	//16
-	{name:"romance",symbol:"❤️",desc:"Limerent"},		//32
-	{name:"lewd",symbol:"💜",desc:"Erotic"},		//64
-	{name:"joy",symbol:"😊",desc:"Joyous"},			//128
-	{name:"yearning",symbol:"😩",desc:"Yearning"},		//256
-	{name:"fairytale",symbol:"🌄",desc:"Romantic"},		//512 ⛰️
-	{name:"serenity",symbol:"😔",desc:"Serene"}		//1024
+	{id:0,name:"emotional",symbol:"😦",desc:"Highly Emotional"},	//1
+	{id:1,name:"sad",symbol:"😢",desc:"Sad"},			//2
+	{id:2,name:"creepy",symbol:"👻",desc:"Creepy"},		//4 👀 😨 //I am literally spending my time finding the most fitting emoji for each mood //the absolute state of my life rn
+	{id:3,name:"mystery",symbol:"❓",desc:"Mysterious"},		//8
+	{id:4,name:"friendship",symbol:"💛",desc:"Affectionate"},	//16
+	{id:5,name:"romance",symbol:"❤️",desc:"Limerent"},		//32
+	{id:6,name:"lewd",symbol:"💜",desc:"Erotic"},		//64
+	{id:7,name:"joy",symbol:"😊",desc:"Joyous"},			//128
+	{id:8,name:"yearning",symbol:"😩",desc:"Yearning"},		//256
+	{id:9,name:"fairytale",symbol:"🌄",desc:"Romantic"},		//512 ⛰️
+	{id:10,name:"serenity",symbol:"😔",desc:"Serene"}		//1024
 
 ];
+
+function moodint_to_moods(moodint) {
+	var moodlist = []
+	id = 0;
+	while (2**(id+1) <= moodint) {
+		id++;
+	}
+
+	while (moodint != 0) {
+		if (moodint >= 2**id) {
+			moodlist.push(moods[id]);
+			moodint = moodint - (2**id);
+		}
+		id--;
+	}
+	return moodlist;
+}
+
+function moods_to_moodint(moodlist) {
+	moodint = 0;
+	for (let mood of moodlist) {
+		moodint += 2**mood;
+	}
+	return moodint;
+}
 
 
 function personpic(id) {
@@ -86,22 +111,14 @@ function refreshPage() {
 
 
 		//create mood emojis
+		moodlist = moodint_to_moods(sortedDreams[i].mood)
 		var moodjis = ""; //end me
-		num = sortedDreams[i].mood;
-		id = 0;
-		while (2**(id+1) <= num) {
-			id++;
-		}
 
-		while (num != 0) {
-			if (num >= 2**id) {
-				moodjis = "<i class='moodji' title='" + moods[id].desc + "' onclick='filterByMood(" + id + ")'>" + moods[id].symbol + "</i>" + moodjis;
-				num = num - (2**id);
-			}
 
-			id--;
+		moodlist.forEach(function(mood) {
+			moodjis = "<i class='moodji' title='" + mood.desc + "' onclick='filterByMood(" + mood.id + ")'>" + mood.symbol + "</i>" + moodjis;
+		});
 
-		}
 
 
 		//check if lucid
@@ -267,23 +284,9 @@ function showallmoods() {
 
 function hasMood(mood,num) {
 	if (mood == -1) return true;
-	id = 0;
-	while (2**(id+1) <= num) {
-		id++;
-	}
-
-	while (num != 0) {
-		if (num >= 2**id) {
-			if (id == mood) {
-				return true;
-			}
-			num = num - (2**id);
-		}
-
-		id--;
-
-	}
-	return false;
+	moodlist = moodint_to_moods(num)
+	mood_ids = moodlist.map(x => x.id)
+	return mood_ids.includes(mood)
 }
 
 
@@ -351,11 +354,13 @@ function createWindowDream(id) {
 
 	title = ((id == null) ? "Add a new dream" : "Edit dream");
 	button = ((id == null) ? "<div class='button okaybutton' onclick=createDream()>Create</div>" : "<div class='button okaybutton' onclick=changeDream(" + id + ")>Save</div>");
+	moodlist = ((id == null) ? [] : moodint_to_moods(dreams[id].mood))
 
 	moodlethtml = ""
 	for (var i=0;i<moods.length;i++) {
 		mood = moods[i];
-		moodlethtml += "<span class='moodlet-inactive' title='" + mood["desc"] + "' onclick='triggerMoodlet(this)' id='moodlet-" + mood["name"] + "'>" + mood["symbol"] + "</span>"
+		cls = ((moodlist.includes(mood)) ? "moodlet-active" : "moodlet-inactive")
+		moodlethtml += "<span class='" + cls + "' title='" + mood["desc"] + "' onclick='triggerMoodlet(this)' id='moodlet-" + mood["name"] + "'>" + mood["symbol"] + "</span>"
 	}
 
 	bd = document.getElementsByTagName("body")[0];
