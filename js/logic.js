@@ -1,6 +1,94 @@
+/*
+	DATABASE
+*/
+
+
+
 var dreams = [];
 var people = [];
 var places = [];
+
+var peoplepics = [];
+var placespics = [];
+
+
+/*
+	LOGIC
+*/
+
+////
+//moods
+////
+
+
+var moods = [
+	{id:0,name:"emotional",symbol:"😦",desc:"Highly Emotional"},	//1
+	{id:1,name:"sad",symbol:"😢",desc:"Sad"},			//2
+	{id:2,name:"creepy",symbol:"👻",desc:"Creepy"},		//4 👀 😨 //I am literally spending my time finding the most fitting emoji for each mood //the absolute state of my life rn
+	{id:3,name:"mystery",symbol:"❓",desc:"Mysterious"},		//8
+	{id:4,name:"friendship",symbol:"💛",desc:"Affectionate"},	//16
+	{id:5,name:"romance",symbol:"❤️",desc:"Limerent"},		//32
+	{id:6,name:"lewd",symbol:"💜",desc:"Erotic"},		//64
+	{id:7,name:"joy",symbol:"😊",desc:"Joyous"},			//128
+	{id:8,name:"yearning",symbol:"😩",desc:"Yearning"},		//256
+	{id:9,name:"fairytale",symbol:"🌄",desc:"Romantic"},		//512 ⛰️
+	{id:10,name:"serenity",symbol:"😔",desc:"Serene"}		//1024
+
+];
+
+function moodint_to_moods(moodint) {
+	var moodlist = []
+	id = 0;
+	while (2**(id+1) <= moodint) {
+		id++;
+	}
+
+	while (moodint != 0) {
+		if (moodint >= 2**id) {
+			moodlist.push(moods[id]);
+			moodint = moodint - (2**id);
+		}
+		id--;
+	}
+	return moodlist;
+}
+
+function moods_to_moodint(moodlist) {
+	moodint = 0;
+	for (let mood of moodlist) {
+		moodint += 2**mood;
+	}
+	return moodint;
+}
+
+
+////
+// pictures
+////
+
+
+function personpic(id) {
+	if (peoplepics[id] == undefined || peoplepics[id] == "") {
+		return "defaultperson.jpg";
+	}
+	else {
+		return "data:img/jpg;base64," + peoplepics[id]
+	}
+}
+function placepic(id) {
+	if (placespics[id] == undefined || placespics[id] == "") {
+		return "defaultplace.jpg";
+	}
+	else {
+		return "data:img/jpg;base64," + placespics[id]
+	}
+}
+
+
+
+////
+// editing data
+////
 
 
 function createPerson() {
@@ -104,8 +192,11 @@ function createDream() {
 }
 
 
+////
+// various data manipulation
+////
 
-
+// counts occurences and assigns them to the dict
 function assignAmounts(arr,identifier) {
 
 	//create the amount attribute for all elements
@@ -126,4 +217,48 @@ function assignAmounts(arr,identifier) {
 	}
 
 
+}
+
+
+// return sorted array of people / places
+// also remove empty spots from the array (as it maps IDs to objects, and IDs are not guaranteed to be continuous)
+function sortByAmount(arr) {
+	var ar = arr.slice(0);
+	ar.sort(function(a,b){return b.amount - a.amount});
+	while (ar.length > 0 && ar[ar.length-1] == undefined) ar.pop();
+	return ar;
+}
+
+// return sorted array of dreams
+// same story
+function sortByDate(arr) {
+	var ar = arr.slice(0);
+	ar.sort(function(a,b){
+		if (a.year!=b.year) return b.year - a.year;
+		if (a.month!=b.month) return b.month - a.month;
+		return b.day - a.day;
+	});
+	while (ar.length > 0 && ar[ar.length-1] == undefined) ar.pop();
+	return ar;
+}
+
+
+
+
+////
+// useful stuff
+////
+
+// checks if the moodinteger 'num' includes the mood 'mood'
+function hasMood(mood,num) {
+	if (mood == -1) return true;
+	moodlist = moodint_to_moods(num)
+	mood_ids = moodlist.map(x => x.id)
+	return mood_ids.includes(mood)
+}
+
+
+function twodigits(s) {
+	if (s>9) return "" + s;
+	else return "0" + s;
 }

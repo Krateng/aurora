@@ -5,7 +5,7 @@
 
 ////
 ////
-// PARSING STUFF
+// INPUT
 ////
 ////
 
@@ -14,8 +14,7 @@
 var zipfile;
 var xmlfile;
 
-var peoplepics = [];
-var placespics = [];
+
 
 
 
@@ -97,8 +96,6 @@ function parseFile(filetext) {
 	assignAmounts(people,"people");
 	assignAmounts(places,"places");
 
-	console.log(people);
-	console.log(places);
 
 	refreshPage();
 
@@ -110,7 +107,7 @@ function parseFile(filetext) {
 //Literally the best function ever
 //I'm not even fecking using it anywhere!!!
 //Note to self: Do not take 1 year pauses between writing on the same code
-
+/*
 function parseXML() {
 	var result = xmlfile.documentElement;
 
@@ -125,7 +122,7 @@ function parseXML() {
 	return result;
 
 }
-
+*/
 
 
 
@@ -167,19 +164,6 @@ function parseXMLobjects() {
 		for (var j=0;j<currentNode.children.length;j++) {
 			var attr_name = currentNode.children[j].nodeName;
 
-			// the old system would check if its a property with several child nodes, but if the property is empty obviously that wouldn't work, so we're just hardcoding the two things that are sets (people and places)
-			//if (!currentNode.children[j].childNodes[0].hasChildNodes() && currentNode.children[j].childNodes.length == 1) {
-			//
-			//	var attr_value = xmlValue(currentNode.children[j].childNodes[0].nodeValue);
-			//}
-			//else {
-			//
-			//	var set = new Set();
-			//	for (var l=0;l<currentNode.children[j].children.length;l++) {
-			//		set.add(xmlValue(currentNode.children[j].children[l].childNodes[0].nodeValue));
-			//	}
-			//	var attr_value = set;
-			//}
 
 
 			if (attr_name != "people" && attr_name != "places") {
@@ -199,8 +183,6 @@ function parseXMLobjects() {
 
 		//Writing the objects in an array with the id as key
 		resultlist[obj.id] = obj;
-		console.log("write object with id " + obj.id + " in array");
-		console.log(obj);
 	}
 
 	return resultlist;
@@ -227,7 +209,7 @@ function xmlValue(str) {
 
 ////
 ////
-// SAVING THE CHANGED DIARY
+// OUTPUT
 ////
 ////
 
