@@ -64,7 +64,51 @@ function parseImage(buffer) {
     	}
     	b64 = window.btoa(binary);
 
-	document.getElementById("picture_create").style.backgroundImage = "url('data:img/jpg;base64," + b64 + "')";
+	cropImage(b64)
+
+	//document.getElementById("picture_create").style.backgroundImage = "url('data:img/jpg;base64," + b64 + "')";
+}
+
+// crops and places in dom because I'm too lazy to remember how promises work
+function cropImage(b64) {
+
+	var img = new Image;
+	img.src = "data:image/jpg;base64," + b64;
+	img.onload = function() {
+
+		SIZE = 200
+
+		// create an off-screen canvas
+		var canvas = document.createElement('canvas'),
+			ctx = canvas.getContext('2d');
+
+		// check sizes
+		wid = img.width;
+		heig = img.height;
+		smaller = Math.min(wid,heig);
+		resize = Math.min(1,(SIZE/smaller)); //no reason to make bigger
+		new_wid = wid * resize;
+		new_heig = heig * resize;
+
+		// how much to remove (in terms of the original size)
+		crop_left = (new_wid - SIZE) / (2 * resize);
+		crop_top = (new_heig - SIZE) / (2 * resize);
+
+		// set dimension to target size
+		canvas.width = SIZE;
+		canvas.height = SIZE;
+
+		// draw source image into the off-screen canvas:
+		ctx.drawImage(img, crop_left, crop_top, smaller, smaller, 0, 0, SIZE, SIZE);
+
+		// encode image to data-uri with base64 version of compressed image
+		done = canvas.toDataURL();
+
+		document.getElementById("picture_create").style.backgroundImage = "url('" + done + "')";
+
+	}
+
+
 }
 
 
