@@ -99,6 +99,15 @@ function createPerson() {
 		np.name = name;
 		np.amount = 0;
 		people.push(np);
+		//peoplepics[np.id]
+		img = document.getElementById("picture_create").style.backgroundImage;
+		if (img != "" && img != undefined) {
+			img = img.split(",")
+			img = img[img.length-1]
+			img = img.slice(0,-2)
+			peoplepics[np.id] = img
+		}
+		//console.log(img)
 		//assignAmounts(people,"people");
 		removeShade();
 	}

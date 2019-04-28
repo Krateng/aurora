@@ -243,15 +243,18 @@ function createWindow(type,funct) {
 
 	bd = document.getElementsByTagName("body")[0];
 	bd.innerHTML += `
-		<div id="shade">
+		<div id="shade" ondragover="dragover(event)" ondrop="readImageFile(event)">
+			<!-- You can drag it anywhere on the screen! -->
 			<table class="inputwindow inputwindow-small">
-				<tr class="header"><td>Add a new ` + type + `</td></tr>
+				<tr class="header"><td colspan=2>Add a new ` + type + `</td></tr>
 				<tr><td>
 				<input id="createname" class="biginput" placeholder="Name" />
-				</td></tr>
+				</td>
+				<td><div id="picture_create" class="picture_create"></div></td>
+				</tr>
 
 
-				<tr><td>
+				<tr><td colspan=2>
 				<div class="button okaybutton" onclick=` + funct + `>Create</div>
 				<div class="button cancelbutton" onclick="removeShade()">Cancel</div>
 				</td></tr>

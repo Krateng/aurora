@@ -22,6 +22,7 @@ var xmlfile;
 function dragover(evt) {
     	evt.preventDefault();
 }
+// ldd file
 function readFile(evt) {
 	evt.preventDefault();
 	//var fl = document.getElementById("fileupload").value;
@@ -35,8 +36,35 @@ function readFile(evt) {
 		parseZip(reader.result);
 	});
 	reader.readAsArrayBuffer(file);
+}
+//image file
+function readImageFile(evt) {
+	evt.preventDefault();
+
+	console.log("WAT");
+	var file = evt.dataTransfer.files[0];
+	var reader = new FileReader();
+	reader.onload = (function(evt) {
+		//return parseFile(reader.result);
+		parseImage(reader.result);
+	});
 
 
+	reader.readAsArrayBuffer(file);
+}
+
+function parseImage(buffer) {
+
+	// credit to stackoverflow user mobz for this
+	var binary = '';
+    	var bytes = new Uint8Array(buffer);
+    	var len = bytes.byteLength;
+    	for (var i = 0; i < len; i++) {
+        	binary += String.fromCharCode(bytes[ i ]);
+    	}
+    	b64 = window.btoa(binary);
+
+	document.getElementById("picture_create").style.backgroundImage = "url('data:img/jpg;base64," + b64 + "')";
 }
 
 

@@ -135,7 +135,7 @@ table.inputwindow {
 	margin-top:-75px;
 	margin-left:-400px;
 	position:center;
-	overflow:hidden;
+	overflow:visible;
 	border-collapse: collapse;
 }
 table.inputwindow-big {
@@ -229,7 +229,7 @@ table.inputwindow input.biginput {
 	color:beige;
 	border:0px;
 	height:50px;
-	width:790px;
+	width:770px;
 	font-size:40px;
 	/*padding:5px;*/
 }
@@ -239,6 +239,16 @@ table.inputwindow textarea:focus {
 }
 
 
+
+table.inputwindow div.picture_create {
+	height:200px;
+	width:200px;
+	margin-top:-150px; /* make parent element ignore size of this thing */
+	background-image:url("../dragimage.png");
+	background-size:cover;
+	background-position:center;
+	background-repeat: no-repeat;
+}
 
 
 
