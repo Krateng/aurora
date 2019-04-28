@@ -41,7 +41,6 @@ function readFile(evt) {
 function readImageFile(evt) {
 	evt.preventDefault();
 
-	console.log("WAT");
 	var file = evt.dataTransfer.files[0];
 	var reader = new FileReader();
 	reader.onload = (function(evt) {
@@ -76,7 +75,7 @@ function cropImage(b64) {
 	img.src = "data:image/jpg;base64," + b64;
 	img.onload = function() {
 
-		SIZE = 200
+		var SIZE = 512;
 
 		// create an off-screen canvas
 		var canvas = document.createElement('canvas'),
