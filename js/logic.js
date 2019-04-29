@@ -67,17 +67,21 @@ function moods_to_moodint(moodlist) {
 ////
 
 
-function personpic(id) {
+// the onlyReal argument specifies that only the actual existing pic should be returned,
+// if none exists, return null instead
+function personpic(id,onlyReal) {
 	if (peoplepics[id] == undefined || peoplepics[id] == "") {
-		return "defaultperson.jpg";
+		if (onlyReal) return null;
+		else return "defaultperson.jpg";
 	}
 	else {
 		return "data:img/jpg;base64," + peoplepics[id]
 	}
 }
-function placepic(id) {
+function placepic(id,onlyReal) {
 	if (placespics[id] == undefined || placespics[id] == "") {
-		return "defaultplace.jpg";
+		if (onlyReal) return null;
+		else return "defaultplace.jpg";
 	}
 	else {
 		return "data:img/jpg;base64," + placespics[id]
@@ -92,25 +96,29 @@ function placepic(id) {
 
 
 function createPerson() {
+	var np = {};
+	np.id = people.length;
+	np.amount = 0;
+	people.push(np);
+
+	changePerson(np.id);
+}
+
+function changePerson(id) {
 	name = document.getElementById("createname").value;
 	if (name != "") {
-		var np = {};
-		np.id = people.length;
-		np.name = name;
-		np.amount = 0;
-		people.push(np);
+		people[id].name = name;
 
 		img = document.getElementById("picture_create").style.backgroundImage;
 		if (img != "" && img != undefined) {
 			img = img.split(",")
 			img = img[img.length-1]
 			img = img.slice(0,-2)
-			peoplepics[np.id] = img
+			peoplepics[id] = img
 		}
 		//assignAmounts(people,"people");
 		removeShade();
 	}
-
 }
 
 function createPlace() {

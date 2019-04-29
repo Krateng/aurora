@@ -110,7 +110,7 @@ function refreshPage() {
 			extraclass = " filtered";
 		}
 
-		html += "<li class='filterbutton" + extraclass + "' onclick='filterByPerson(" + id + ")'>" + name + " (" + amount + ")</li>";
+		html += "<li class='filterbutton" + extraclass + "' onclick='filterByPerson(" + id + ")'>" + name + " (" + amount + ") <img class='edit_person_button' onclick='editPerson(" + id + ")' src='icon_edit.png'/></li>";
 	}
 	document.getElementById("list_people").innerHTML = html
 
@@ -139,7 +139,7 @@ function refreshPage() {
 			extraclass = " filtered";
 		}
 
-		html += "<li class='filterbutton" + extraclass + "' onclick='filterByPlace(" + id + ")'>" + name + " (" + amount + ")</li>";
+		html += "<li class='filterbutton" + extraclass + "' onclick='filterByPlace(" + id + ")'>" + name + " (" + amount + ") <img class='edit_person_button' onclick='editPlace(" + id + ")' src='icon_edit.png'/></li>";
 	}
 	document.getElementById("list_places").innerHTML = html
 
@@ -222,13 +222,27 @@ function showallmoods() {
 ////
 ////
 
+/*
+	On reading these following lines, you might be tempted to think "Krateng, why is the function for the
+	window to create people and places generic and its parameters define the details, while the function
+	for the window to create dreams contains the logic itself? That makes no sense!"
+	And to this I say: https://www.youtube.com/watch?v=b3_lVSrPB6w
+*/
+
 function addPerson() {
-	createWindow("Person","createPerson()");
+	createWindow("Add a new Person","Create","createPerson()","");
 }
 
 function addPlace() {
-	createWindow("Place","createPlace()");
+	createWindow("Add a new Place","Create","createPlace()","");
 
+}
+
+function editPerson(id) {
+	createWindow("Edit Person","Save","changePerson(" + id + ")",people[id].name,personpic(id,true));
+}
+function editPlace(id) {
+	createWindow("Edit Place","Save","changePlace(" + id + ")",places[id].name,placepic(id,true));
 }
 
 function addDream() {
@@ -239,23 +253,25 @@ function editDream(id) {
 	createWindowDream(id)
 }
 
-function createWindow(type,funct) {
+function createWindow(type,submit,funct,name,img) {
+
+	bg_style = ((img == undefined || img == null) ? "" : "background-image:url('" + img + "');")
 
 	bd = document.getElementsByTagName("body")[0];
 	bd.innerHTML += `
 		<div id="shade" ondragover="dragover(event)" ondrop="readImageFile(event)">
 			<!-- You can drag it anywhere on the screen! -->
 			<table class="inputwindow inputwindow-small">
-				<tr class="header"><td colspan=2>Add a new ` + type + `</td></tr>
+				<tr class="header"><td colspan=2>` + type + `</td></tr>
 				<tr><td>
-				<input id="createname" class="biginput" placeholder="Name" />
+				<input id="createname" class="biginput" placeholder="Name" value="` + name + `" />
 				</td>
-				<td><div id="picture_create" class="picture_create"></div></td>
+				<td><div id="picture_create" class="picture_create" style="` + bg_style + `"></div></td>
 				</tr>
 
 
 				<tr><td colspan=2>
-				<div class="button okaybutton" onclick=` + funct + `>Create</div>
+				<div class="button okaybutton" onclick=` + funct + `>` + submit + `</div>
 				<div class="button cancelbutton" onclick="removeShade()">Cancel</div>
 				</td></tr>
 
