@@ -122,24 +122,30 @@ function changePerson(id) {
 }
 
 function createPlace() {
+	var np = {};
+	np.id = places.length;
+	np.amount = 0;
+	places.push(np);
+
+	changePerson(np.id);
+}
+
+function changePlace(id) {
 	name = document.getElementById("createname").value;
 	if (name != "") {
-		var np = {};
-		np.id = places.length;
-		np.name = name;
-		np.amount = 0;
-		places.push(np);
+		places[id].name = name;
 
 		img = document.getElementById("picture_create").style.backgroundImage;
 		if (img != "" && img != undefined) {
 			img = img.split(",")
 			img = img[img.length-1]
 			img = img.slice(0,-2)
-			placespics[np.id] = img
+			placespics[id] = img
 		}
 		//assignAmounts(places,"places");
 		removeShade();
 	}
+
 	removeShade();
 }
 

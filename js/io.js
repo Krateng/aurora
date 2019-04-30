@@ -85,7 +85,7 @@ function cropImage(b64) {
 		wid = img.width;
 		heig = img.height;
 		smaller = Math.min(wid,heig);
-		resize = Math.min(1,(SIZE/smaller)); //no reason to make bigger
+		resize = SIZE/smaller;
 		new_wid = wid * resize;
 		new_heig = heig * resize;
 
@@ -306,7 +306,8 @@ function createZipfile() {
 		newzipfile.folder("pics_places").file(i + ".jpg",placespics[i], {base64: true});
 	}
 	promise = newzipfile.generateAsync({type : "blob"}).then(function(blob) {
-		saveAs(blob,"mydreamdiary.ldd");
+		datestr = new Date().toJSON().slice(0,10).replace(/-/g,'');
+		saveAs(blob,"dreamdiary_" + datestr + ".ldd");
 	});
 
 }
