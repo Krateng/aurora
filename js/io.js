@@ -329,7 +329,7 @@ function createXMLfile() {
 		output += Indent(2);
 		output += "<person>\n";
 		for (attr in people[i]) {
-			if (attr == "amount") break;
+			if (attr == "amount") continue;
 			output += Indent(3);
 			output += "<" + attr + ">" + people[i][attr].toString().replace("&","&amp;") + "</" + attr + ">\n";
 		}
@@ -347,7 +347,7 @@ function createXMLfile() {
 		output += Indent(2);
 		output += "<place>\n";
 		for (attr in places[i]) {
-			if (attr == "amount") break;
+			if (attr == "amount") continue;
 			output += Indent(3);
 			output += "<" + attr + ">" + places[i][attr].toString().replace("&","&amp;") + "</" + attr + ">\n";
 		}
